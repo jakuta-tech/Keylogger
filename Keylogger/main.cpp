@@ -1,8 +1,12 @@
 #include <Windows.h>
 #include <winuser.h>
+#include <process.h>
+#include "HookInput.h"
 #include "resource.h"
 
-// Forward functions
+#define ID_BUTTON_START                 1001
+#define ID_BUTTON_STOP                  1002
+
 BOOL CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM);
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow)
@@ -13,11 +17,20 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 BOOL CALLBACK DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch(uMsg)
+	switch (uMsg)
 	{
 	case WM_INITDIALOG:
 		break;
 	case WM_COMMAND:
+		switch (LOWORD(wParam))
+		{
+		case ID_BUTTON_START:
+			_beginthread(HookInput::startTracking, 0, nullptr);
+			break;
+		case ID_BUTTON_STOP:
+			HookInput::stopTracking();
+			break;
+		}
 		break;
 	case WM_CLOSE:
 		EndDialog(hWnd, 0);
